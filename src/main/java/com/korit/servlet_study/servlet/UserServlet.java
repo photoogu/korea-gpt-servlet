@@ -36,10 +36,7 @@ public class UserServlet extends HttpServlet {
         if (searchValue != null) {
             if (!searchValue.isBlank()) {
                 request.setAttribute("users", users.stream()
-                        .filter(user -> user.getUsername().contains(searchValue)
-                        || user.getPassword().contains(searchValue)
-                        || user.getName().contains(searchValue)
-                        || user.getEmail().contains(searchValue))
+                        .filter(user -> user.getUsername().contains(searchValue))
                         .collect(Collectors.toList()));
             }
         }
@@ -58,9 +55,17 @@ public class UserServlet extends HttpServlet {
         ServletContext servletContext = request.getServletContext();
         List<User> users = (List<User>) servletContext.getAttribute("users");
 
-        if(users.stream().filter(u -> u.getUsername().equals(user.getUsername())).collect(Collectors.toList()) != null){
-            
+        if(users.stream().filter(u -> u.getUsername().equals(user.getUsername())).collect(Collectors.toList()).size() > 0){
+            response.setContentType("text/html");
+            response.getWriter().println("<script>"+
+                    "alert('Username already exists');"+
+                    "history.back();"+
+                    "</script>");
+            return;
         }
+        users.add(user);
+
+        response.sendRedirect("http://localhost:8080/servlet_study_war/user");
     }
 }
 
