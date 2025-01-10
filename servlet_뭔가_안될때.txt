@@ -1,0 +1,12 @@
+servlet 뭔가 안될때
+1. 서버를 끈다
+2. File -> Close Project
+3. project 폴더로 이동
+4. .idea 폴더, target 폴더 삭제
+5. 다시 프로젝트 열기
+6. 메이븐 clean, 메이븐 install 순서대로 실행
+(오른쪽 빨간 체크표시-servlet_study-Lifecycle)
+7. tomcat 설정(edit configuration)
+8. Deployment - Artifact 선택
+9. Server 탭에서 VM options => -Dfile.encoding=UTF-8
+10. 저장 및 실행
