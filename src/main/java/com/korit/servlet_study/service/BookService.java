@@ -1,12 +1,14 @@
 package com.korit.servlet_study.service;
 
+import com.korit.servlet_study.dao.BookDao;
 import com.korit.servlet_study.entity.Book;
 
 public class BookService {
+    private BookDao bookDao;
     private static BookService bookService;
 
     private BookService() {
-
+        bookDao = BookDao.getInstance();
     }
 
     public static BookService getInstance() {
@@ -17,7 +19,12 @@ public class BookService {
     }
 
     public Book addBook(Book book) {
-        bookDao.saveAuthor
+        bookDao.saveAuthor(book.getAuthor());
+        bookDao.savePublisher(book.getPublisher());
+        bookDao.saveBookCategory(book.getBookCategory());
+
+        return bookDao.saveBook(book).get();
     }
+
 
 }

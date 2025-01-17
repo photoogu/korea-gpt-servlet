@@ -4,6 +4,7 @@ import com.korit.servlet_study.entity.Author;
 import com.korit.servlet_study.entity.Book;
 import com.korit.servlet_study.entity.BookCategory;
 import com.korit.servlet_study.entity.Publisher;
+import com.korit.servlet_study.service.BookService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +15,15 @@ import java.io.IOException;
 
 @WebServlet("/book1")
 public class BookServlet extends HttpServlet {
+    private BookService bookService;
+
+    public BookServlet() {
+        bookService = BookService.getInstance();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/book1_study1.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/book_study1.jsp").forward(req, resp);
     }
 
     @Override
@@ -31,14 +37,16 @@ public class BookServlet extends HttpServlet {
 
         Author authorObj = new Author(0, author);
         Publisher publisherObj = new Publisher(0, publisher);
-        BookCategory bookCategoryObj = new BookCategory(0, category);
+        BookCategory categoryObj = new BookCategory(0, category);
         Book book = Book.builder()
                 .bookName(bookName)
                 .isbn(isbn)
                 .author(authorObj)
                 .publisher(publisherObj)
-                .category(bookCategoryObj)
+                .bookCategory(categoryObj)
                 .bookImgUrl(imgUrl)
                 .build();
+
+        bookService.addBook(book);
     }
 }
