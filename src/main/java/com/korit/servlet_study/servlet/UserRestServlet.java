@@ -24,7 +24,7 @@ public class UserRestServlet extends HttpServlet {
                 .build();
 
         String jsonUser = objectMapper.writeValueAsString(user); // 자바 객체인 User 를 JSON 문자열로 바꾸어준다
-        System.out.println(jsonUser);
+        System.out.println(jsonUser); // 확인
 
         response.setHeader("Access-Control-Allow-Origin", "*"); // Origin : 출처 대상, 서버 >> 허용 서버 제한
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS"); // 요청 메서드 허용 제한

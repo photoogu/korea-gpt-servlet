@@ -14,31 +14,42 @@ import java.io.IOException;
 public class BookRestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String author = request.getParameter("author");
-        String publisher = request.getParameter("publisher");
-        String category = request.getParameter("category");
-
-        Author authorObj = new Author(0, author);
-        Publisher publisherObj = new Publisher(0, publisher);
-        BookCategory categoryObj = new BookCategory(0, category);
+        Author author = new Author(1, "테스트저자");
+        Publisher publisher = new Publisher(10, "테스트출판사");
+        BookCategory bookCategory = new BookCategory(100, "테스트카테고리");
 
         Book book = Book.builder()
-                .bookID(Integer.parseInt(request.getParameter("bookID")))
-                .bookName(request.getParameter("bookName"))
-                .author(authorObj)
-                .publisher(publisherObj)
-                .bookCategory(categoryObj)
-                .bookImgUrl(request.getParameter("bookImgUrl"))
+                .bookID(200)
+                .bookName("테스트도서명")
+                .isbn("abcd1234")
+                .bookImgUrl("http://test.com/1234")
+                .authorID(author.getAuthorId())
+                .publisherID(publisher.getPublisherId())
+                .categoryID(bookCategory.getCategoryId())
+                .author(author)
+                .publisher(publisher)
+                .bookCategory(bookCategory)
                 .build();
+//        아래는 DB랑 연결 한 경우,
+//        String author = request.getParameter("author");
+//        String publisher = request.getParameter("publisher");
+//        String category = request.getParameter("category");
+//
+//        Author authorObj = new Author(0, author);
+//        Publisher publisherObj = new Publisher(0, publisher);
+//        BookCategory categoryObj = new BookCategory(0, category);
+//
+//        Book book = Book.builder()
+//                .bookID(Integer.parseInt(request.getParameter("bookID")))
+//                .bookName(request.getParameter("bookName"))
+//                .author(authorObj)
+//                .publisher(publisherObj)
+//                .bookCategory(categoryObj)
+//                .bookImgUrl(request.getParameter("bookImgUrl"))
+//                .build();
 
+        ObjectMapper objectMapper = new ObjectMapper();
         String jsonUser = objectMapper.writeValueAsString(book);
-        System.out.println(jsonUser);
-
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
 
         response.setContentType("application/json");
         response.getWriter().println(jsonUser);
