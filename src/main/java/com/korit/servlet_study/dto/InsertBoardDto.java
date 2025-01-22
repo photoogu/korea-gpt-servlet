@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InsertBoardDto {
-    // JSON 의 key 값과 이름을 동일하게 해야함
+    // JSON 의 key 값과 이름을 동일하게 해야함 -- React 의 WritePage 에 있는 inputValue 의 key 값들과 동일
     private String title;
     private String content;
 

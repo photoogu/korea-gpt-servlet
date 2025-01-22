@@ -24,7 +24,7 @@ public class BoardDao {
         return instance;
     }
 
-    public Optional<Board> save(Board board) {
+    public Board save(Board board) {
         Board insertedBoard = null;
         Connection con = null;
         PreparedStatement ps = null;
@@ -39,7 +39,7 @@ public class BoardDao {
             ps.setString(1, board.getTitle());
             ps.setString(2, board.getContent());
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            ResultSet rs = ps.getGeneratedKeys(); // autoimplement 된 key 값 (board_tb 의 board_id)
             if (rs.next()) {
                 insertedBoard = Board.builder()
                         .boardId(rs.getInt(1))
@@ -53,6 +53,6 @@ public class BoardDao {
             dbConnectionMgr.freeConnection(con, ps);
         }
 
-        return Optional.ofNullable(insertedBoard);
+        return insertedBoard;
     }
 }
