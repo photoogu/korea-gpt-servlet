@@ -1,6 +1,7 @@
 package com.korit.servlet_study.security.jwt;
 
 import com.korit.servlet_study.entity.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -29,7 +30,7 @@ public class JwtProvider {
     }
 
     private Date getExpireDate() {
-        return new Date(new Date().getTime() + (1000l * 60 * 60 * 24 * 365)); // 현 시간 + (1초(long타입)*60*60*24*365(1년))
+        return new Date(new Date().getTime() + (1000L * 60 * 60 * 24 * 365)); // 현 시간 + (1초(long타입)*60*60*24*365(1년))
     }
 
     public String generateToken(User user) { // 토큰 생성
@@ -38,5 +39,28 @@ public class JwtProvider {
                 .setExpiration(getExpireDate())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact(); // = build() >> jwt 에서는 compact 로 사용
+    }
+
+    public Claims parseToken(String token) {
+        Claims claims = null;
+        try {
+            claims = Jwts.parserBuilder()
+                    .setSigningKey(key) // 토큰 검증을 위한 키 설정
+                    .build()
+                    .parseClaimsJws(removeBearer(token)) // null 일 경우, 알아서 예외로 처리됨
+                    .getBody(); // Claim 객체로 변환
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return claims;
+    }
+
+    private String removeBearer(String bearerToken) {
+        String accessToken = null;
+        final String BEARER_KEYWORD = "Bearer ";
+        if(bearerToken.startsWith(BEARER_KEYWORD)) {
+            accessToken = bearerToken.substring(BEARER_KEYWORD.length());
+        }
+        return accessToken;
     }
 }

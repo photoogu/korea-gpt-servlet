@@ -28,7 +28,7 @@ public class SigninRestServlet extends HttpServlet {
 //        String line;
 //        if ((line = bufferedReader.readLine()) != null) {
 //            requestJsonData.append(line);
-//        }
+//        } >> 내가 직접 한것..
         StringBuilder requestJsonData = new StringBuilder();
         try(BufferedReader bufferedReader = req.getReader()) {
             String line;
