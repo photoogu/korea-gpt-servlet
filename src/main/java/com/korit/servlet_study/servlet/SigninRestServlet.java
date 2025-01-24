@@ -38,13 +38,13 @@ public class SigninRestServlet extends HttpServlet {
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
-        SigninDto signinDto = objectMapper.readValue(requestJsonData.toString(), SigninDto.class);
+        SigninDto signinDto = objectMapper.readValue(requestJsonData.toString(), SigninDto.class); // JSON -> DTO
 
         ResponseDto<?> responseDto = authService.signin(signinDto);
 
         resp.setContentType("application/json");
         resp.setStatus(responseDto.getStatus());
-        resp.getWriter().write(objectMapper.writeValueAsString(responseDto));
+        resp.getWriter().write(objectMapper.writeValueAsString(responseDto)); // DTO -> JSON
 
     }
 }

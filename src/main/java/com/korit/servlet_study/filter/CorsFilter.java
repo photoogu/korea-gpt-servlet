@@ -5,17 +5,16 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("*")
 public class CorsFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "*");
-        response.setHeader("Access-Control-Allow-Headers", "*");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Origin", "*"); // Origin : 출처 대상, 서버 >> 허용 서버 제한
+        response.setHeader("Access-Control-Allow-Methods", "*"); // 요청 메서드 허용 제한
+        response.setHeader("Access-Control-Allow-Headers", "*"); // 아래의 ContentType 을 허용하여 받음
+        response.setHeader("Access-Control-Allow-Credentials", "true"); // 쿠키 허용 제한
 
         filterChain.doFilter(servletRequest, servletResponse);
     }

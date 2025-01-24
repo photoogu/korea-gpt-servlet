@@ -1,7 +1,10 @@
 package com.korit.servlet_study.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.korit.servlet_study.dto.ResponseDto;
 import com.korit.servlet_study.entity.User;
+import com.korit.servlet_study.security.annotation.JwtValid;
+import com.korit.servlet_study.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,23 +16,24 @@ import java.io.IOException;
 @WebServlet("/api/user")
 public class UserRestServlet extends HttpServlet {
 
+    private UserService userService;
+
+    public UserRestServlet() {
+        userService = UserService.getInstance();
+    }
+
+    @JwtValid
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 토큰이 있을 때만 요청에 응답하게 해야함 >> AuthenticatedServlet 의 메서드를 호출하여 검증하는 단계를 매번 거쳐야함 >> Filter 사용!
+
+        String userIdParam = request.getParameter("userId");
+        int userId = Integer.parseInt(userIdParam);
+        ResponseDto<?> responseDto = userService.getUser(userId);
+
         ObjectMapper objectMapper = new ObjectMapper();
-        User user = User.builder()
-                .username("test")
-                .password("1234")
-                .name("테스트")
-                .email("test@gmail.com")
-                .build();
-
-        String jsonUser = objectMapper.writeValueAsString(user); // 자바 객체인 User 를 JSON 문자열로 바꾸어준다
-        System.out.println(jsonUser); // 확인
-
-        response.setHeader("Access-Control-Allow-Origin", "*"); // Origin : 출처 대상, 서버 >> 허용 서버 제한
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS"); // 요청 메서드 허용 제한
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type"); // 아래의 ContentType 을 허용하여 받음
-        response.setHeader("Access-Control-Allow-Credentials", "true"); // 쿠키 허용 제한
+        String jsonUser = objectMapper.writeValueAsString(responseDto);
+        System.out.println(jsonUser);
 
         response.setContentType("application/json");
         response.getWriter().println(jsonUser);
